@@ -6,6 +6,7 @@ import { TextInput } from 'react-native';
 export default function Input() {
     const [text, setText] = useState("");
 
+    // function to update the text
     function updateText(ChangeText){
       setText(ChangeText);
     }
