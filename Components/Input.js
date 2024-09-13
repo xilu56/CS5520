@@ -8,7 +8,7 @@ import { TextInput } from 'react-native';
 export default function Input({shouldFocus}) {
     const [text, setText] = useState("");
     const [isFocused, setIsFocused] = useState(false);
-    const [showMessage, setShowMessage] = useState(false);
+    const [showMessage, setShowMessage] = useState("");
     const textInputRef = useRef(null);
 
   // function to update the text
@@ -46,8 +46,8 @@ export default function Input({shouldFocus}) {
         onBlur={handleBlur}
         onFocus={handleFocus}
         />
-        {/* Show character count only if the user has typed */}
-        {text.length > 0 && (
+        {/* Show character count only if the TextInput is focused and the user has typed */}
+        {isFocused && text.length > 0 && (
                 <Text style={{ marginTop: 10 }}>
                     Character count: {text.length}
                 </Text>

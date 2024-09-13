@@ -13,7 +13,7 @@ export default function App() {
       <StatusBar style="auto" />
       {/* pass appName as a prop to Headers */}
       <Header name={appName} />
-      <Input autoFocus={true}/>
+      <Input shouldFocus={true}/>
 
     </View>
   );
