@@ -7,18 +7,32 @@ import { TextInput } from 'react-native';
 
 export default function Input({shouldFocus}) {
     const [text, setText] = useState("");
+    const [isFocused, setIsFocused] = useState(false);
+    const [showMessage, setShowMessage] = useState(false);
     const textInputRef = useRef(null);
 
-    // function to update the text
-    function updateText(ChangeText) {
-      setText(ChangeText);
+  // function to update the text
+  function updateText(ChangeText) {
+    setText(ChangeText);
+    setShowMessage(false);
   }
 
   useEffect(() => {
     if(shouldFocus && textInputRef.current){
       textInputRef.current.focus();
     }
-  }, [shouldFocus]); 
+  }, [shouldFocus]);
+  
+  function handleBlur() {
+    setIsFocused(false); // No longer focused
+    setShowMessage(true); // Show the message after blur
+}
+
+  function handleFocus() {
+    setIsFocused(true); // TextInput is focused
+    setShowMessage(false); // Hide message on focus
+  }
+  
 
   return (
     <View>
@@ -29,6 +43,8 @@ export default function Input({shouldFocus}) {
         style={{borderBottomColor: "purple", borderBottomWidth: 2}}
         value={text}
         onChangeText= {updateText}
+        onBlur={handleBlur}
+        onFocus={handleFocus}
         />
         {/* Show character count only if the user has typed */}
         {text.length > 0 && (
@@ -36,6 +52,14 @@ export default function Input({shouldFocus}) {
                     Character count: {text.length}
                 </Text>
             )}
+        {/* Show message when TextInput loses focus */}
+        {showMessage && (
+                <Text style={{ marginTop: 10 }}>
+                    {text.length >= 3 
+                        ? "Thank you" 
+                        : "Please type more than 3 characters"}
+                </Text>
+            )}
     </View>
-  )
+  );
 }
