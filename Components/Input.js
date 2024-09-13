@@ -3,7 +3,7 @@ import React from 'react'
 import {useState} from 'react';
 import { TextInput } from 'react-native';
 
-export default function Input() {
+export default function Input({shouldFocus}) {
     const [text, setText] = useState("");
 
     // function to update the text
@@ -18,6 +18,7 @@ export default function Input() {
         style={{borderBottomColor: "purple", borderBottomWidth: 2}}
         value={text}
         onChangeText= {updateText}
+        autoFocus={shouldFocus} //set autoFocus based on the prop
         />
     </View>
   )
