@@ -1,32 +1,42 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import Header from './Components/Header';
-import Input from './Components/Input';
-import { useState } from 'react';
+import { StatusBar } from "expo-status-bar";
+import { Button, StyleSheet, Text, View } from "react-native";
+import Header from "./Components/Header";
+import { useState } from "react";
+import Input from "./Components/Input";
 
 export default function App() {
-  const appName = "My Awesome App";
-  const [receivedData, setReceivedData] = useState(""); // State to hold data received from Input
+  const [receivedData, setReceivedData] = useState(""); // State for received input
+  const [modalVisible, setModalVisible] = useState(false); // Modal visibility state
+  const appName = "My app!";
 
-  // Callback function to handle the input data from Input component
+  // Function to handle data received from the Input component
   function handleInputData(data) {
-    console.log(data);
-    setReceivedData(data); // Update the state with the received data
+    console.log("App.js received: ", data);
+    setReceivedData(data); // Update state with received data
+    setModalVisible(false); // Close modal after receiving data
   }
 
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      {/* Pass appName as a prop to Header */}
+      {/* Display header */}
       <Header name={appName} />
-      
-      {/* Pass handleInputData as a prop to Input */}
-      <Input shouldFocus={true} inputHandler={handleInputData} />
+
+      {/* Button to open the modal */}
+      <Button
+        title="Add a Goal"
+        onPress={() => setModalVisible(true)} // Open modal
+      />
+
+      {/* Input modal component */}
+      <Input
+        textInputFocus={true}
+        inputHandler={handleInputData} // Handle the input from Input component
+        isModalVisible={modalVisible} // Control modal visibility
+      />
 
       {/* Display the received data */}
-      <Text style={{ marginTop: 20, fontSize: 18 }}>
-        You typed: {receivedData}
-      </Text>
+      <Text style={styles.text}>Goal: {receivedData}</Text>
     </View>
   );
 }
@@ -34,9 +44,13 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  text: {
+    fontSize: 18,
+    color: "black",
+    marginTop: 20,
   },
 });
-
