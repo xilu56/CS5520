@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "white",
+    marginVertical: 5,
   },
   topView: {
     flex: 1,
