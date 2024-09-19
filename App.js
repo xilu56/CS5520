@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    // alignItems: "center",
+    //alignItems: "center",
     justifyContent: "center",
   },
   text: {
@@ -52,5 +52,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  bottomView: { flex: 4, backgroundColor: "#d5d", alignItems: "center" },
+  bottomView: { flex: 4, backgroundColor: "#dcd", alignItems: "center" },
 });
