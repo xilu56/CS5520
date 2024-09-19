@@ -1,7 +1,7 @@
 import { View, Text, Button, TextInput } from 'react-native';
 import React, { useState, useRef, useEffect } from 'react';
 
-export default function Input({ shouldFocus }) {
+export default function Input({ shouldFocus, inputHandler }) {
   const [text, setText] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [showMessage, setShowMessage] = useState("");
@@ -31,9 +31,11 @@ export default function Input({ shouldFocus }) {
 
   // Define the handleConfirm function
   function handleConfirm() {
-    console.log('User typed:', text);
+    console.log(text);
+    inputHandler(text);
+    // call the  callback fn received from app.js
+    // pass what user has typed
   }
-
   return (
     <View>
       <TextInput
