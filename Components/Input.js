@@ -1,6 +1,5 @@
 import { Button, Modal, StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
-
 export default function Input({
   textInputFocus,
   inputHandler,
@@ -21,7 +20,7 @@ export default function Input({
           autoCorrect={true}
           keyboardType="default"
           value={text}
-          style={{ borderBottomColor: "purple", borderBottomWidth: 2 }}
+          style={styles.input}
           onChangeText={(changedText) => {
             setText(changedText);
           }}
@@ -46,12 +45,12 @@ export default function Input({
     </Modal>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "red",
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
   },
+  input: { borderColor: "green", borderWidth: 2, padding: 5 },
 });
