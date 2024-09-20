@@ -1,4 +1,4 @@
-import { Button, Modal, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, Modal, StyleSheet, Text, TextInput, View, Image } from "react-native";
 import React, { useState } from "react";
 
 export default function Input({
@@ -46,10 +46,26 @@ export default function Input({
           text && <Text>{text.length}</Text>
         )}
 
+        {/* Add Image components here */}
+        <View style={styles.imageContainer}>
+          {/* Network Image */}
+          <Image
+            style={styles.image}
+            source={{ uri: "https://cdn-icons-png.flaticon.com/512/2617/2617812.png" }}
+            alt="Network image"
+          />
+          
+          {/* Local Image */}
+          <Image
+            style={styles.image}
+            source={require("../assets/2617812.png")} // Local image
+            alt="Local image"
+          />
+        </View>
+
         {/* Horizontal button container */}
         <View style={styles.buttonContainer}>
           <View style={styles.buttonWrapper}>
-            {/* Disable Confirm button if text is less than MIN_CHAR_LENGTH */}
             <Button
               title="Confirm"
               onPress={handleConfirm}
@@ -78,6 +94,15 @@ const styles = StyleSheet.create({
     padding: 5,
     marginBottom: 20, // Add spacing between input and buttons
     width: "80%",  // Adjust width to fit well on screen
+  },
+  imageContainer: {
+    flexDirection: "column", // Lay out images vertically
+    justifyContent: "space-around",
+    alignItems: "center"
+  },
+  image: {
+    width: 100,
+    height: 100,  // Set width and height of both images
   },
   buttonContainer: {
     flexDirection: "row", // Lay out buttons horizontally
