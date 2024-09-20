@@ -10,14 +10,16 @@ export default function Input({
   const [text, setText] = useState("");
   const [blur, setBlur] = useState(false);
 
+  const MIN_CHAR_LENGTH = 3; // Set the required minimum characters
+
   function handleConfirm() {
-    inputHandler(text);
-    setText("");  // Clear the input after confirming
+    inputHandler(text);  // Pass the text to parent
+    setText("");         // Clear the TextInput
   }
 
   function handleCancelPress() {
-    onCancel();   // Trigger parent cancel handler to close the modal
-    setText("");  // Clear the input after canceling
+    onCancel();   // Call parent onCancel function to close the modal
+    setText("");  // Clear the TextInput after canceling
   }
 
   return (
@@ -35,10 +37,10 @@ export default function Input({
           onFocus={() => setBlur(false)}
         />
         {blur ? (
-          text.length >= 3 ? (
+          text.length >= MIN_CHAR_LENGTH ? (
             <Text>Thank you</Text>
           ) : (
-            <Text>Please type more than 3 characters</Text>
+            <Text>Please type at least {MIN_CHAR_LENGTH} characters</Text>
           )
         ) : (
           text && <Text>{text.length}</Text>
@@ -47,10 +49,14 @@ export default function Input({
         {/* Horizontal button container */}
         <View style={styles.buttonContainer}>
           <View style={styles.buttonWrapper}>
-            <Button title="Confirm" onPress={handleConfirm} />
+            {/* Disable Confirm button if text is less than MIN_CHAR_LENGTH */}
+            <Button
+              title="Confirm"
+              onPress={handleConfirm}
+              disabled={text.length < MIN_CHAR_LENGTH}  // Disable if too few characters
+            />
           </View>
           <View style={styles.buttonWrapper}>
-            {/* Call handleCancelPress here to clear the input */}
             <Button title="Cancel" color="red" onPress={handleCancelPress} />
           </View>
         </View>
@@ -84,4 +90,3 @@ const styles = StyleSheet.create({
     marginHorizontal: 5, // Add space between buttons
   },
 });
-
