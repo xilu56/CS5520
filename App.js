@@ -74,5 +74,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  buttonContainer: {
+    flexDirection: "row", // Lay out buttons horizontally
+    justifyContent: "space-between", // Space them out with even space
+    alignItems: "center",  // Center buttons vertically
+    width: "60%",  // Control the width of the button container
+  },
+  spacer: {
+    width: 10, // Spacer for adding horizontal space between buttons
+  },
   bottomView: { flex: 4, backgroundColor: "#dcd", alignItems: "center" },
 });

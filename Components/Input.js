@@ -5,15 +5,15 @@ export default function Input({
   textInputFocus,
   inputHandler,
   isModalVisible,
-  onCancel,  // Receive the cancel callback function
+  onCancel,
 }) {
   const [text, setText] = useState("");
   const [blur, setBlur] = useState(false);
 
   function handleConfirm() {
-    // console.log(text);
     inputHandler(text);
   }
+
   return (
     <Modal animationType="slide" visible={isModalVisible}>
       <View style={styles.container}>
@@ -24,15 +24,9 @@ export default function Input({
           keyboardType="default"
           value={text}
           style={styles.input}
-          onChangeText={(changedText) => {
-            setText(changedText);
-          }}
-          onBlur={() => {
-            setBlur(true);
-          }}
-          onFocus={() => {
-            setBlur(false);
-          }}
+          onChangeText={(changedText) => setText(changedText)}
+          onBlur={() => setBlur(true)}
+          onFocus={() => setBlur(false)}
         />
         {blur ? (
           text.length >= 3 ? (
@@ -43,18 +37,24 @@ export default function Input({
         ) : (
           text && <Text>{text.length}</Text>
         )}
-        <Button title="Confirm" onPress={handleConfirm} />
 
-        {/* Cancel Button */}
-        <Button
-          title="Cancel"
-          color="red"  // To visually differentiate, but use same styling
-          onPress={onCancel}  // Call the cancel handler passed from App.js
-        />
+        {/* Horizontal button container */}
+        <View style={styles.buttonContainer}>
+          {/* Confirm Button wrapped inside a View */}
+          <View style={styles.buttonWrapper}>
+            <Button title="Confirm" onPress={handleConfirm} />
+          </View>
+
+          {/* Cancel Button wrapped inside a View */}
+          <View style={styles.buttonWrapper}>
+            <Button title="Cancel" color="red" onPress={onCancel} />
+          </View>
+        </View>
       </View>
     </Modal>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -62,5 +62,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  input: { borderColor: "green", borderWidth: 2, padding: 5 },
+  input: {
+    borderColor: "green",
+    borderWidth: 2,
+    padding: 5,
+    marginBottom: 20, // Add spacing between input and buttons
+    width: "80%",  // Adjust width to fit well on screen
+  },
+  buttonContainer: {
+    flexDirection: "row", // Lay out buttons horizontally
+    justifyContent: "space-between", // Space them out
+    width: "60%",  // Control the width of the button container
+    marginTop: 20, // Add spacing above the buttons
+  },
+  buttonWrapper: {
+    flex: 1, // Take equal space for both buttons
+    marginHorizontal: 5, // Add space between buttons
+  },
 });
