@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonContainer: {
-    flexDirection: "row", // Lay out buttons horizontally
+    flexDirection: "row", // Lay out buttons horizontally using row direction
     justifyContent: "space-between", // Space them out with even space
     alignItems: "center",  // Center buttons vertically
     width: "60%",  // Control the width of the button container
