@@ -1,12 +1,15 @@
 import { Button, Modal, StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
+
 export default function Input({
   textInputFocus,
   inputHandler,
   isModalVisible,
+  onCancel,  // Receive the cancel callback function
 }) {
   const [text, setText] = useState("");
   const [blur, setBlur] = useState(false);
+
   function handleConfirm() {
     // console.log(text);
     inputHandler(text);
@@ -41,6 +44,13 @@ export default function Input({
           text && <Text>{text.length}</Text>
         )}
         <Button title="Confirm" onPress={handleConfirm} />
+
+        {/* Cancel Button */}
+        <Button
+          title="Cancel"
+          color="red"  // To visually differentiate, but use same styling
+          onPress={onCancel}  // Call the cancel handler passed from App.js
+        />
       </View>
     </Modal>
   );
