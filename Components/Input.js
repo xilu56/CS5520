@@ -12,6 +12,12 @@ export default function Input({
 
   function handleConfirm() {
     inputHandler(text);
+    setText("");  // Clear the input after confirming
+  }
+
+  function handleCancelPress() {
+    onCancel();   // Trigger parent cancel handler to close the modal
+    setText("");  // Clear the input after canceling
   }
 
   return (
@@ -40,14 +46,12 @@ export default function Input({
 
         {/* Horizontal button container */}
         <View style={styles.buttonContainer}>
-          {/* Confirm Button wrapped inside a View */}
           <View style={styles.buttonWrapper}>
             <Button title="Confirm" onPress={handleConfirm} />
           </View>
-
-          {/* Cancel Button wrapped inside a View */}
           <View style={styles.buttonWrapper}>
-            <Button title="Cancel" color="red" onPress={onCancel} />
+            {/* Call handleCancelPress here to clear the input */}
+            <Button title="Cancel" color="red" onPress={handleCancelPress} />
           </View>
         </View>
       </View>
@@ -80,3 +84,4 @@ const styles = StyleSheet.create({
     marginHorizontal: 5, // Add space between buttons
   },
 });
+

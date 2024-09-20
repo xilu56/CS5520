@@ -9,7 +9,7 @@ export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const appName = "My app!";
 
-  // update to receive data
+  // Update to receive data
   function handleInputData(data) {
     console.log("App.js ", data);
     setReceivedData(data);
@@ -28,7 +28,7 @@ export default function App() {
         },
         {
           text: "OK",
-          onPress: () => setModalVisible(false),
+          onPress: () => setModalVisible(false),  // Only hide the modal
         },
       ],
       { cancelable: true }
@@ -49,7 +49,7 @@ export default function App() {
         textInputFocus={true}
         inputHandler={handleInputData}
         isModalVisible={modalVisible}
-        onCancel={handleCancel}
+        onCancel={handleCancel}  // Pass handleCancel directly
       />
       <View style={styles.bottomView}>
         <Text style={styles.text}>{receivedData}</Text>
@@ -62,7 +62,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    //alignItems: "center",
     justifyContent: "center",
   },
   text: {
@@ -75,13 +74,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonContainer: {
-    flexDirection: "row", // Lay out buttons horizontally using row direction
-    justifyContent: "space-between", // Space them out with even space
-    alignItems: "center",  // Center buttons vertically
-    width: "60%",  // Control the width of the button container
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "60%",
   },
   spacer: {
-    width: 10, // Spacer for adding horizontal space between buttons
+    width: 10,
   },
   bottomView: { flex: 4, backgroundColor: "#dcd", alignItems: "center" },
 });
