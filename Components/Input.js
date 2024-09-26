@@ -23,7 +23,7 @@ export default function Input({
   }
 
   return (
-    <Modal animationType="slide" visible={isModalVisible}>
+    <Modal animationType="slide" visible={isModalVisible} transparent={true}>
       <View style={styles.container}>
         <TextInput
           autoFocus={textInputFocus}
@@ -89,34 +89,25 @@ export default function Input({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    // backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
   },
   input: {
-    borderColor: "green",
+    borderColor: "purple",
     borderWidth: 2,
     padding: 5,
-    marginBottom: 20, // Add spacing between input and buttons
-    width: "80%",  // Adjust width to fit well on screen
+    marginVertical: 10,
   },
-  imageContainer: {
-    flexDirection: "column", // Lay out images vertically
-    justifyContent: "space-around",
-    alignItems: "center"
-  },
-  image: {
-    width: 100,
-    height: 100,  // Set width and height of both images
+  modalContainer: {
+    borderRadius: 6,
+    backgroundColor: "#999",
+    alignItems: "center",
   },
   buttonContainer: {
-    flexDirection: "row", // Lay out buttons horizontally
-    justifyContent: "space-between", // Space them out
-    width: "60%",  // Control the width of the button container
-    marginTop: 20, // Add spacing above the buttons
+    width: "30%",
+    margin: 10,
   },
-  buttonWrapper: {
-    flex: 1, // Take equal space for both buttons
-    marginHorizontal: 5, // Add space between buttons
-  },
+  buttonsRow: { flexDirection: "row" },
+  image: { width: 100, height: 100 },
 });
