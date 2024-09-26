@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, SafeAreaView, StyleSheet, Text, View, Alert } from "react-native";
+import { Button, SafeAreaView, ScrollView, StyleSheet, Text, View, Alert } from "react-native";
 import Header from "./Components/Header";
 import { useState } from "react";
 import Input from "./Components/Input";
@@ -58,14 +58,15 @@ export default function App() {
         onCancel={handleCancel}  // Pass handleCancel directly
       />
       <View style={styles.bottomView}>
-       {/* use goals.map() and return a view and a text for each array items */}
-       {goals.map((goalObj) => {
-          return (
-            <View key={goalObj.id} style={styles.textContainer}>
-              <Text style={styles.text}>{goalObj.text}</Text>
-            </View>
-          );
-        })} 
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+          {goals.map((goalObj) => {
+            return (
+              <View key={goalObj.id} style={styles.textContainer}>
+                <Text style={styles.text}>{goalObj.text}</Text>
+              </View>
+            );
+          })}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -77,15 +78,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: "center",
   },
+  scrollViewContainer: {
+    alignItems: "center",
+  },
   text: {
     color: "red",
-    padding: 5,
-    fontSize: 20,
+    padding: 50,
+    fontSize: 50,
   },
   textContainer: {
     backgroundColor: "#aaa",
     borderRadius: 5,
-    marginTop: 5,
+    marginTop: 50,
   },
   topView: {
     flex: 1,
@@ -101,5 +105,5 @@ const styles = StyleSheet.create({
   spacer: {
     width: 10,
   },
-  bottomView: { flex: 4, backgroundColor: "#dcd", alignItems: "center" },
+  bottomView: { flex: 4, backgroundColor: "#dcd"},
 });
