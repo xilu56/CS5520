@@ -52,7 +52,9 @@ export default function App() {
         onCancel={handleCancel}  // Pass handleCancel directly
       />
       <View style={styles.bottomView}>
-        <Text style={styles.text}>{receivedData}</Text>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>{receivedData}</Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -65,8 +67,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text: {
-    color: "white",
-    marginVertical: 5,
+    color: "red",
+    padding: 5,
+    fontSize: 20,
+  },
+  textContainer: {
+    backgroundColor: "#aaa",
+    borderRadius: 5,
+    marginTop: 5,
   },
   topView: {
     flex: 1,
