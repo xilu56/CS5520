@@ -32,6 +32,13 @@ export default function App() {
   function dismissModal() {
     setModalVisible(false);
   }
+  function handleGoalDelete(deletedId) {
+    setGoals((prevGoals) => {
+      return prevGoals.filter((goalObj) => {
+        return goalObj.id != deletedId;
+      });
+    });
+  }
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -56,7 +63,7 @@ export default function App() {
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
           renderItem={({ item }) => {
-            return <GoalItem goalObj={item} />;
+            return <GoalItem deleteHandler={handleGoalDelete} goalObj={item} />;
           }}
         />
       </View>
