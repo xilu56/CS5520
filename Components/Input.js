@@ -46,7 +46,12 @@ export default function Input({
           text && <Text>{text.length}</Text>
         )}
 
-        {/* Add Image components here */}
+        {/* {/* 
+          Purpose of the `alt` prop:
+          - Provides accessibility support for visually impaired users.
+          - Screen readers use the `alt` text to describe the content of the image.
+          - Useful for accessibility tools in apps to explain what the image represents.
+         */}
         <View style={styles.imageContainer}>
           {/* Network Image */}
           <Image
