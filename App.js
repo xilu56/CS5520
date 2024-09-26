@@ -11,6 +11,8 @@ import {
 import Header from "./Components/Header";
 import { useState } from "react";
 import Input from "./Components/Input";
+import GoalItem from "./Components/GoalItem";
+
 export default function App() {
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
@@ -54,23 +56,9 @@ export default function App() {
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
           renderItem={({ item }) => {
-            return (
-              <View key={item.id} style={styles.textContainer}>
-                <Text style={styles.text}>{item.text}</Text>
-              </View>
-            );
+            return <GoalItem goalObj={item} />;
           }}
         />
-        {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-          {goals.map((goalObj) => {
-            return (
-              <View key={goalObj.id} style={styles.textContainer}>
-                <Text style={styles.text}>{goalObj.text}</Text>
-              </View>
-            );
-          })}
-        </ScrollView>
-        </ScrollView> */}
       </View>
     </SafeAreaView>
   );
@@ -84,16 +72,6 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     alignItems: "center",
-  },
-  text: {
-    color: "purple",
-    padding: 50,
-    fontSize: 50,
-  },
-  textContainer: {
-    backgroundColor: "#aaa",
-    borderRadius: 5,
-    marginTop: 50,
   },
   topView: {
     flex: 1,
