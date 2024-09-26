@@ -1,40 +1,44 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, SafeAreaView, StyleSheet, Text, View, Alert } from "react-native";
+import {
+  Button,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+} from "react-native";
 import Header from "./Components/Header";
 import { useState } from "react";
 import Input from "./Components/Input";
+import GoalItem from "./Components/GoalItem";
 
 export default function App() {
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+  const [goals, setGoals] = useState([]);
   const appName = "My app!";
-
-  // Update to receive data
+  // update to receive data
   function handleInputData(data) {
     console.log("App.js ", data);
-    setReceivedData(data);
+    let newGoal = { text: data, id: Math.random() };
+    //make a new obj and store the received data as the obj's text property
+    setGoals((prevGoals) => {
+      return [...prevGoals, newGoal];
+    });
+    // setReceivedData(data);
     setModalVisible(false);
   }
-
-  // Callback function to handle modal cancel action
-  function handleCancel() {
-    Alert.alert(
-      "Cancel",
-      "Are you sure you want to cancel?",
-      [
-        {
-          text: "No",
-          style: "cancel",
-        },
-        {
-          text: "OK",
-          onPress: () => setModalVisible(false),  // Only hide the modal
-        },
-      ],
-      { cancelable: true }
-    );
+  function dismissModal() {
+    setModalVisible(false);
   }
-
+  function handleGoalDelete(deletedId) {
+    setGoals((prevGoals) => {
+      return prevGoals.filter((goalObj) => {
+        return goalObj.id != deletedId;
+      });
+    });
+  }
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -42,45 +46,44 @@ export default function App() {
         <Header name={appName}></Header>
         <Button
           title="Add a Goal"
-          onPress={() => setModalVisible(true)}
+          onPress={function () {
+            setModalVisible(true);
+          }}
         />
       </View>
       <Input
         textInputFocus={true}
         inputHandler={handleInputData}
         isModalVisible={modalVisible}
-        onCancel={handleCancel}  // Pass handleCancel directly
+        dismissModal={dismissModal}
       />
       <View style={styles.bottomView}>
-        <Text style={styles.text}>{receivedData}</Text>
+        
+        <FlatList
+          contentContainerStyle={styles.scrollViewContainer}
+          data={goals}
+          renderItem={({ item }) => {
+            return <GoalItem deleteHandler={handleGoalDelete} goalObj={item} />;
+          }}
+        />
       </View>
     </SafeAreaView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    // alignItems: "center",
     justifyContent: "center",
   },
-  text: {
-    color: "white",
-    marginVertical: 5,
+  scrollViewContainer: {
+    alignItems: "center",
   },
   topView: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "60%",
-  },
-  spacer: {
-    width: 10,
-  },
-  bottomView: { flex: 4, backgroundColor: "#dcd", alignItems: "center" },
+  bottomView: { flex: 4, backgroundColor: "#dcd" },
 });
