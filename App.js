@@ -1,18 +1,40 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Button, SafeAreaView, StyleSheet, Text, View, Alert } from "react-native";
 import Header from "./Components/Header";
 import { useState } from "react";
 import Input from "./Components/Input";
+
 export default function App() {
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const appName = "My app!";
-  // update to receive data
+
+  // Update to receive data
   function handleInputData(data) {
     console.log("App.js ", data);
     setReceivedData(data);
     setModalVisible(false);
   }
+
+  // Callback function to handle modal cancel action
+  function handleCancel() {
+    Alert.alert(
+      "Cancel",
+      "Are you sure you want to cancel?",
+      [
+        {
+          text: "No",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => setModalVisible(false),  // Only hide the modal
+        },
+      ],
+      { cancelable: true }
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -20,15 +42,14 @@ export default function App() {
         <Header name={appName}></Header>
         <Button
           title="Add a Goal"
-          onPress={function () {
-            setModalVisible(true);
-          }}
+          onPress={() => setModalVisible(true)}
         />
       </View>
       <Input
         textInputFocus={true}
         inputHandler={handleInputData}
         isModalVisible={modalVisible}
+        onCancel={handleCancel}  // Pass handleCancel directly
       />
       <View style={styles.bottomView}>
         <Text style={styles.text}>{receivedData}</Text>
@@ -41,7 +62,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    //alignItems: "center",
     justifyContent: "center",
   },
   text: {
@@ -52,6 +72,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "60%",
+  },
+  spacer: {
+    width: 10,
   },
   bottomView: { flex: 4, backgroundColor: "#dcd", alignItems: "center" },
 });
