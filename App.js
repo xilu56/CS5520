@@ -59,13 +59,17 @@ export default function App() {
       />
       <View style={styles.bottomView}>
         
-        <FlatList
-          contentContainerStyle={styles.scrollViewContainer}
-          data={goals}
-          renderItem={({ item }) => {
-            return <GoalItem deleteHandler={handleGoalDelete} goalObj={item} />;
-          }}
-        />
+      <FlatList
+        contentContainerStyle={styles.scrollViewContainer}
+        data={goals}
+        ListEmptyComponent={() => (
+          <Text style={styles.noGoalsText}>No goals to show</Text>
+        )}
+        renderItem={({ item }) => {
+          return <GoalItem deleteHandler={handleGoalDelete} goalObj={item} />;
+        }}
+      />
+ 
       </View>
     </SafeAreaView>
   );
@@ -86,4 +90,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   bottomView: { flex: 4, backgroundColor: "#dcd" },
+  noGoalsText: {
+    fontSize: 30,
+    color: "red",
+  },
 });
