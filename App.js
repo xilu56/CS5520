@@ -2,7 +2,6 @@ import { StatusBar } from "expo-status-bar";
 import {
   Button,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -62,12 +61,17 @@ export default function App() {
       <FlatList
         contentContainerStyle={styles.scrollViewContainer}
         data={goals}
+        ListHeaderComponent={
+          goals.length > 0 ? (
+            <Text style={styles.goalHeaderText}>My Goals</Text>
+          ) : null
+        }
         ListEmptyComponent={() => (
           <Text style={styles.noGoalsText}>No goals to show</Text>
         )}
-        renderItem={({ item }) => {
-          return <GoalItem deleteHandler={handleGoalDelete} goalObj={item} />;
-        }}
+        renderItem={({ item }) => (
+          <GoalItem deleteHandler={handleGoalDelete} goalObj={item} />
+        )}
       />
  
       </View>
@@ -91,7 +95,17 @@ const styles = StyleSheet.create({
   },
   bottomView: { flex: 4, backgroundColor: "#dcd" },
   noGoalsText: {
-    fontSize: 30,
+    fontSize: 20,
     color: "red",
+    marginTop: 20,
+    textAlign: "center",
+  },
+  goalHeaderText: {
+    fontSize: 30,
+    color: "black",
+    fontWeight: "bold",
+    marginTop: 10,
+    marginBottom: 10,
+    textAlign: "center",
   },
 });
