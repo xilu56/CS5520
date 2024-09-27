@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import {
+  Alert,
   Button,
   SafeAreaView,
   StyleSheet,
@@ -13,7 +14,6 @@ import Input from "./Components/Input";
 import GoalItem from "./Components/GoalItem";
 
 export default function App() {
-  const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
   const appName = "My app!";
@@ -38,6 +38,25 @@ export default function App() {
       });
     });
   }
+  // Function to delete all goals
+  function handleDeleteAll() {
+    Alert.alert(
+      "Delete All Goals",
+      "Are you sure you want to delete all goals?",
+      [
+        {
+          text: "No",
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: () => setGoals([]),
+        },
+      ],
+      { cancelable: true }
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -63,17 +82,23 @@ export default function App() {
         data={goals}
         ListHeaderComponent={
           goals.length > 0 ? (
-            <Text style={styles.goalHeaderText}>My Goals</Text>
+            <Text style={styles.goalHeaderText}>My Goal List</Text>
           ) : null
         }
         ListEmptyComponent={() => (
           <Text style={styles.noGoalsText}>No goals to show</Text>
         )}
+        ListFooterComponent={
+          goals.length > 0 ? (
+            <View style={styles.footer}>
+              <Button title="Delete All" color="red" onPress={handleDeleteAll} />
+            </View>
+          ) : null
+        }
         renderItem={({ item }) => (
           <GoalItem deleteHandler={handleGoalDelete} goalObj={item} />
         )}
       />
- 
       </View>
     </SafeAreaView>
   );
@@ -107,5 +132,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     textAlign: "center",
+  },
+  footer: {
+    marginTop: 20,
+    marginBottom: 30,
+    alignItems: "center",
   },
 });
