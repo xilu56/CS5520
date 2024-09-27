@@ -18,12 +18,12 @@ const styles = StyleSheet.create({
   text: {
     color: "purple",
     padding: 5,
-    fontSize: 20,
+    fontSize: 30,
   },
   textContainer: {
     backgroundColor: "#aaa",
     borderRadius: 5,
-    marginTop: 30,
+    marginTop: 20,
     flexDirection: "row",
     alignItems: "center",
   },
