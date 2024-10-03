@@ -8,8 +8,8 @@ export default function GoalItem({ goalObj, deleteHandler, pressHandler }) {
   }
   function handlePress() {
     // call a callbackfn received from parent
-      //pass the goal obj back to Home.js
-      pressHandler(goalObj);
+    //pass the goal obj back to Home.js
+    pressHandler(goalObj);
   }
   return (
     <View style={styles.textContainer}>
@@ -19,6 +19,7 @@ export default function GoalItem({ goalObj, deleteHandler, pressHandler }) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   text: {
     color: "purple",

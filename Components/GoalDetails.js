@@ -11,8 +11,8 @@ export default function GoalDetails({ navigation, route }) {
     <View>
       {route.params ? (
         <Text>
-          This is details of a goal with text {route.params.goalData.text} and
-          id {route.params.goalData.id}
+          Details of {route.params.goalData.text} goal with 
+          {route.params.goalData.id}
         </Text>
       ) : (
         <Text>More details</Text>
@@ -21,4 +21,5 @@ export default function GoalDetails({ navigation, route }) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({});

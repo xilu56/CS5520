@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import {
+  Alert,
   Button,
   SafeAreaView,
   ScrollView,
@@ -40,14 +41,12 @@ export default function Home({ navigation }) {
     });
   }
 
-  function handleGoalPress() {
-    function handleGoalPress(pressedGoal) {
-      //receive the goal obj
-      console.log(pressedGoal);
-      // navigate to GoalDetails and pass goal obj as params
-      navigation.navigate("Details", { goalData: pressedGoal });
+  function handleGoalPress(pressedGoal) {
+    //receive the goal obj
+    console.log(pressedGoal);
+    // navigate to GoalDetails and pass goal obj as params
+    navigation.navigate("Details", { goalData: pressedGoal });
   }
-}
   function deleteAll() {
     Alert.alert("Delete All", "Are you sure you want to delete all goals?", [
       {
@@ -59,6 +58,7 @@ export default function Home({ navigation }) {
       { text: "No", style: "cancel" },
     ]);
   }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -121,6 +121,7 @@ export default function Home({ navigation }) {
     </SafeAreaView>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -131,6 +132,7 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     alignItems: "center",
   },
+
   topView: {
     flex: 1,
     alignItems: "center",
