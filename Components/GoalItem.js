@@ -8,7 +8,8 @@ export default function GoalItem({ goalObj, deleteHandler, pressHandler }) {
   }
   function handlePress() {
     // call a callbackfn received from parent
-    pressHandler();
+      //pass the goal obj back to Home.js
+      pressHandler(goalObj);
   }
   return (
     <View style={styles.textContainer}>
