@@ -18,7 +18,9 @@ export default function GoalItem({ goalObj, deleteHandler }) {
     <View style={styles.textContainer}>
       <Pressable
         onPress={handlePress}
-        style={styles.horizontalContainer}
+        style={({ pressed }) => {
+          return [styles.horizontalContainer, pressed && styles.pressedStyle];
+        }}
         android_ripple={{ color: "red", radius: 30 }}
       >
         <Text style={styles.text}>{goalObj.text}</Text>
@@ -44,5 +46,10 @@ const styles = StyleSheet.create({
   horizontalContainer: {
     flexDirection: "row",
     alignItems: "center",
+    backgroundColor: "#aaa",
+  },
+  pressedStyle: {
+    opacity: 0.5,
+    backgroundColor: "red",
   },
 });
