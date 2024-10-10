@@ -8,11 +8,13 @@ import {
   Text,
   View,
   FlatList,
+  Pressable,
 } from "react-native";
 import Header from "./Header";
 import { useState } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
+import PressableButton from "./PressableButton";
 
 export default function Home({ navigation }) {
   const [receivedData, setReceivedData] = useState("");
@@ -64,12 +66,20 @@ export default function Home({ navigation }) {
       <StatusBar style="auto" />
       <View style={styles.topView}>
         <Header name={appName}></Header>
-        <Button
+        <PressableButton
+          pressedFunction={function () {
+            setModalVisible(true);
+          }}
+          componentStyle={{ backgroundColor: "beige" }}
+        >
+          <Text style={styles.buttonText}>Add a Goal</Text>
+        </PressableButton>
+        {/* <Button
           title="Add a Goal"
           onPress={function () {
             setModalVisible(true);
           }}
-        />
+        /> */}
       </View>
       <Input
         textInputFocus={true}

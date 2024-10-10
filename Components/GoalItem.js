@@ -27,8 +27,8 @@ export default function GoalItem({ goalObj, deleteHandler }) {
         <Text style={styles.text}>{goalObj.text}</Text>
         <PressableButton
           componentStyle={styles.deleteButton}
-          pressedHandler={handleDelete}
-          // pressedStyle={styles.pressedStyle}
+          pressedFunction={handleDelete}
+          pressedStyle={styles.pressedStyle}
         >
           <Text style={styles.deleteText}>X</Text>
         </PressableButton>
