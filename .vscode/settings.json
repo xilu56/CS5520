@@ -1,0 +1,4 @@
+{
+    "vim.mouseSelectionGoesIntoVisualMode": false,
+    "vim.startInInsertMode": true
+}
