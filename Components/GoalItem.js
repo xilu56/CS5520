@@ -1,4 +1,4 @@
-import { Button, Pressable, StyleSheet, Text, View } from "react-native";
+import { Button, Pressable, StyleSheet, Text, View, Alert } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import PressableButton from "./PressableButton";
@@ -7,8 +7,25 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 export default function GoalItem({ goalObj, deleteHandler }) {
   const navigation = useNavigation();
   function handleDelete() {
-    console.log("deleted");
     deleteHandler(goalObj.id);
+  }
+
+  function showDeleteConfirmation() {
+    Alert.alert(
+      "Delete Goal",
+      "Are you sure you want to delete this goal?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: handleDelete,
+          style: "destructive",
+        },
+      ]
+    );
   }
   function handlePress() {
     // call a callbackfn received from parent
@@ -20,6 +37,7 @@ export default function GoalItem({ goalObj, deleteHandler }) {
     <View style={styles.textContainer}>
       <Pressable
         onPress={handlePress}
+        onLongPress={showDeleteConfirmation}
         style={({ pressed }) => {
           return [styles.horizontalContainer, pressed && styles.pressedStyle];
         }}
