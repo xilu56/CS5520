@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import PressableButton from "./PressableButton";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-export default function GoalItem({ goalObj, deleteHandler }) {
+export default function GoalItem({ goalObj, deleteHandler, separators }) {
   const navigation = useNavigation();
   function handleDelete() {
     deleteHandler(goalObj.id);
@@ -38,6 +38,12 @@ export default function GoalItem({ goalObj, deleteHandler }) {
       <Pressable
         onPress={handlePress}
         onLongPress={showDeleteConfirmation}
+        onPressIn={() => {
+          separators.highlight()
+        }}
+        onPressOut={() => {
+          separators.unhighlight()
+        }}
         style={({ pressed }) => {
           return [styles.horizontalContainer, pressed && styles.pressedStyle];
         }}
