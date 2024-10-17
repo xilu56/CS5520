@@ -15,7 +15,7 @@ import Input from "./Input";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
 import { database } from "../Firebase/firebaseSetup";
-import { writeToDB } from "../Firebase/firestoreHelper";
+import { writeToDB, deleteFromDB } from "../Firebase/firestoreHelper";
 
 import { collection, onSnapshot } from "firebase/firestore";
 
@@ -35,11 +35,9 @@ export default function Home({ navigation }) {
   }, []);
   
   function handleInputData(data) {
+    console.log("App.js ", data);
     let newGoal = { text: data };
     writeToDB(newGoal, "goals");
-    // setGoals((prevGoals) => {
-      // return [...prevGoals, newGoal];
-    // });
     setModalVisible(false);
   }
 
@@ -48,9 +46,7 @@ export default function Home({ navigation }) {
   }
 
   function handleGoalDelete(deletedId) {
-    setGoals((prevGoals) => {
-      return prevGoals.filter((goalObj) => goalObj.id != deletedId);
-    });
+    deleteFromDB(deletedId, "goals");
   }
 
   function deleteAll() {
