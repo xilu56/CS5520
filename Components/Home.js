@@ -10,22 +10,36 @@ import {
   Pressable,
 } from "react-native";
 import Header from "./Header";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
+import { database } from "../Firebase/firebaseSetup";
+import { writeToDB } from "../Firebase/firestoreHelper";
+
+import { collection, onSnapshot } from "firebase/firestore";
 
 export default function Home({ navigation }) {
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
   const appName = "My app!";
+  useEffect(() => {
+    onSnapshot(collection(database, "goals"), (querySnapshot) => {
+      let newArray = [];
+      querySnapshot.forEach((docSnapshot) => {
+        newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
+      });
+      setGoals(newArray);
+    });
+  }, []);
   
   function handleInputData(data) {
-    let newGoal = { text: data, id: Math.random() };
-    setGoals((prevGoals) => {
-      return [...prevGoals, newGoal];
-    });
+    let newGoal = { text: data };
+    writeToDB(newGoal, "goals");
+    // setGoals((prevGoals) => {
+      // return [...prevGoals, newGoal];
+    // });
     setModalVisible(false);
   }
 
