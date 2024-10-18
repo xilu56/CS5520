@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
 import { database } from "./firebaseSetup";
 
 export async function writeToDB(data, collectionName) {
@@ -30,3 +30,14 @@ export async function deleteAllFromDB(collectionName) {
         console.log("delete all ", err);
     }
   }
+
+// Function to add a "warning" field to a specific document in Firestore
+export const addWarningToGoal = async (goalId) => {
+  try {
+    const goalRef = doc(database, "goals", goalId);
+    await updateDoc(goalRef, { warning: true });
+    console.log("Warning added to goal with ID: ", goalId);
+  } catch (err) {
+    console.error("Error adding warning to goal: ", err);
+  }
+};
