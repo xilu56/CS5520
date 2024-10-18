@@ -24,8 +24,10 @@ export default function Home({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
   const appName = "My app!";
+  const collectionName = "goals";
+
   useEffect(() => {
-    onSnapshot(collection(database, "goals"), (querySnapshot) => {
+    onSnapshot(collection(database, collectionName), (querySnapshot) => {
       let newArray = [];
       querySnapshot.forEach((docSnapshot) => {
         newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
@@ -37,7 +39,7 @@ export default function Home({ navigation }) {
   function handleInputData(data) {
     console.log("App.js ", data);
     let newGoal = { text: data };
-    writeToDB(newGoal, "goals");
+    writeToDB(newGoal, collectionName);
     setModalVisible(false);
   }
 
@@ -46,7 +48,7 @@ export default function Home({ navigation }) {
   }
 
   function handleGoalDelete(deletedId) {
-    deleteFromDB(deletedId, "goals");
+    deleteFromDB(deletedId, collectionName);
   }
 
   function deleteAll() {
@@ -54,7 +56,7 @@ export default function Home({ navigation }) {
       {
         text: "Yes",
         onPress: () => {
-          deleteAllFromDB("goals");
+          deleteAllFromDB(collectionName);
         },
       },
       { text: "No", style: "cancel" },
