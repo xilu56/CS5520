@@ -27,13 +27,18 @@ export default function Home({ navigation }) {
   const collectionName = "goals";
 
   useEffect(() => {
-    onSnapshot(collection(database, collectionName), (querySnapshot) => {
+    const unsubscribe = onSnapshot(collection(database, collectionName), (querySnapshot) => {
       let newArray = [];
       querySnapshot.forEach((docSnapshot) => {
         newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
       });
       setGoals(newArray);
     });
+  
+    // Cleanup function to detach the listener
+    return () => {
+      unsubscribe();
+    };
   }, []);
   
   function handleInputData(data) {
