@@ -1,18 +1,17 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN, FIREBASE_PROJECT_ID, FIREBASE_STORAGE_BUCKET, FIREBASE_MESSAGING_SENDER_ID, FIREBASE_APP_ID, FIREBASE_MEASUREMENT_ID } from "@env";
 
-//Your web app's Firebase configuration. 
-//Copy this object from Firebase console
+// Firebase configuration using environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyB6_55fM7883ettRTuLw_JA6ypT3FAQW-Q",
-  authDomain: "fall2024-b735c.firebaseapp.com",
-  projectId: "fall2024-b735c",
-  storageBucket: "fall2024-b735c.appspot.com",
-  messagingSenderId: "310777735312",
-  appId: "1:310777735312:web:3c6cd5576d13e2841ad015",
-  measurementId: "G-Z6QC679VE6"
+  apiKey: FIREBASE_API_KEY,
+  authDomain: FIREBASE_AUTH_DOMAIN,
+  projectId: FIREBASE_PROJECT_ID,
+  storageBucket: FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+  appId: FIREBASE_APP_ID,
+  measurementId: FIREBASE_MEASUREMENT_ID,
 };
 
 const app = initializeApp(firebaseConfig);
-
 export const database = getFirestore(app);
