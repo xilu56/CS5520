@@ -1,6 +1,12 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  setDoc,
+} from "firebase/firestore";
 import { database } from "./firebaseSetup";
-
 export async function writeToDB(data, collectionName) {
   try {
     const docRef = await addDoc(collection(database, collectionName), data);
@@ -9,35 +15,43 @@ export async function writeToDB(data, collectionName) {
     console.log("write to db ", err);
   }
 }
-
 export async function deleteFromDB(deletedId, collectionName) {
-    try {
-      await deleteDoc(doc(database, collectionName, deletedId));
-    } catch (err) {
-      console.log("delete from DB ", err);
-    }
-  }
-
-
-export async function deleteAllFromDB(collectionName) {
-    try {
-        //get all the documents in the collection
-        const querySnapshot = await getDocs(collection(database, collectionName));
-        querySnapshot.forEach((docSnapshot) => {
-          deleteDoc(doc(database, collectionName, docSnapshot.id));
-        });
-    } catch (err) {
-        console.log("delete all ", err);
-    }
-  }
-
-// Function to add a "warning" field to a specific document in Firestore
-export const addWarningToGoal = async (goalId) => {
   try {
-    const goalRef = doc(database, "goals", goalId);
-    await updateDoc(goalRef, { warning: true });
-    console.log("Warning: true has been added to goal");
+    await deleteDoc(doc(database, collectionName, deletedId));
   } catch (err) {
-    console.error("Error adding warning to goal: ", err);
+    console.log("delete from DB ", err);
   }
-};
+}
+export async function updateDB(id, data, collectionName) {
+  try {
+    await setDoc(doc(database, collectionName, id), data, { merge: true });
+  } catch (err) {
+    console.log("update DB ", err);
+  }
+}
+export async function deleteAllFromDB(collectionName) {
+  try {
+    //get all the documents in the collection
+    const querySnapshot = await getDocs(collection(database, collectionName));
+    querySnapshot.forEach((docSnapshot) => {
+      deleteDoc(doc(database, collectionName, docSnapshot.id));
+    });
+  } catch (err) {
+    console.log("delete all ", err);
+  }
+}
+
+export async function getAllDocuments(collectionName) {
+  try {
+    const querySnapshot = await getDocs(collection(database, collectionName));
+    const data = [];
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach((docSnap) => {
+        data.push(docSnap.data());
+      });
+    }
+    return data;
+  } catch (err) {
+    console.log("get all docs ", err);
+  }
+}
