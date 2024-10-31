@@ -7,6 +7,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { database } from "./firebaseSetup";
+
 export async function writeToDB(data, collectionName) {
   try {
     const docRef = await addDoc(collection(database, collectionName), data);
@@ -15,13 +16,17 @@ export async function writeToDB(data, collectionName) {
     console.log("write to db ", err);
   }
 }
+
 export async function deleteFromDB(deletedId, collectionName) {
   try {
     await deleteDoc(doc(database, collectionName, deletedId));
+    // also delete the users subcollections if exists
+    deleteAllFromDB(`goals/${deletedId},users`);
   } catch (err) {
     console.log("delete from DB ", err);
   }
 }
+
 export async function updateDB(id, data, collectionName) {
   try {
     await setDoc(doc(database, collectionName, id), data, { merge: true });
@@ -29,6 +34,7 @@ export async function updateDB(id, data, collectionName) {
     console.log("update DB ", err);
   }
 }
+
 export async function deleteAllFromDB(collectionName) {
   try {
     //get all the documents in the collection

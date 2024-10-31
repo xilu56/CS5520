@@ -8,8 +8,8 @@ export default function GoalUsers({ id }) {
     // fetch data
     async function fetchData() {
       try {
+        // check and see if we already have users data in the database, if so use that, if not fetch from API
         const dataFromDB = await getAllDocuments(`goals/${id}/users`);
-        console.log(dataFromDB);
         if (dataFromDB.length) {
           console.log("reading data from DB");
           setUsers(
@@ -24,12 +24,19 @@ export default function GoalUsers({ id }) {
         const response = await fetch(
           "https://jsonplaceholder.typicode.com/users/"
         );
+        // promise is not getting rejected if there is an HTTP error (status code not in 200s)
+        // we have to check response.ok
         if (!response.ok) {
+          // what to do in case of an HTTP error e.g. 404
+          // throw an error
           throw new Error(
             `An HTTP error happened with status: ${response.status}`
           );
         }
+        // this code will only execute if the response.ok is true
+        //extract data
         const data = await response.json();
+        // set the users state variable from the data
         data.forEach((user) => writeToDB(user, `goals/${id}/users`));
         setUsers(
           data.map((user) => {
@@ -53,4 +60,5 @@ export default function GoalUsers({ id }) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({});

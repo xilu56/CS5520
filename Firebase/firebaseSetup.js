@@ -15,6 +15,7 @@ const firebaseConfig = {
   messagingSenderId: process.env.EXPO_PUBLIC_messagingSenderId,
   appId: process.env.EXPO_PUBLIC_appId,
 };
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const database = getFirestore(app);

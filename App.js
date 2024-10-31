@@ -11,7 +11,9 @@ import { onAuthStateChanged, signOut } from "firebase/auth";
 import Profile from "./Components/Profile";
 import PressableButton from "./Components/PressableButton";
 import AntDesign from "@expo/vector-icons/AntDesign";
+
 const Stack = createNativeStackNavigator();
+
 const authStack = (
   <>
     <Stack.Screen name="Signup" component={Signup} />
