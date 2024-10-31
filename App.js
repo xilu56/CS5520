@@ -7,13 +7,11 @@ import { Button } from "react-native";
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import { auth } from "./Firebase/firebaseSetup";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import Profile from "./Components/Profile";
 import PressableButton from "./Components/PressableButton";
 import AntDesign from "@expo/vector-icons/AntDesign";
-
 const Stack = createNativeStackNavigator();
-
 const authStack = (
   <>
     <Stack.Screen name="Signup" component={Signup} />
@@ -62,7 +60,24 @@ const appStack = (
         };
       }}
     />
-    <Stack.Screen name="Profile" component={Profile} />
+    <Stack.Screen
+      name="Profile"
+      component={Profile}
+      options={{
+        headerRight: () => {
+          return (
+            <PressableButton
+              componentStyle={{ backgroundColor: "purple" }}
+              pressedHandler={() => {
+                signOut(auth);
+              }}
+            >
+              <AntDesign name="logout" size={24} color="white" />
+            </PressableButton>
+          );
+        },
+      }}
+    />
   </>
 );
 export default function App() {
