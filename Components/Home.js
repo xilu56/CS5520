@@ -14,68 +14,69 @@ import { useEffect, useState } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
-import { database } from "../Firebase/firebaseSetup";
+import { auth, database } from "../Firebase/firebaseSetup";
 import {
   writeToDB,
   deleteFromDB,
   deleteAllFromDB,
 } from "../Firebase/firestoreHelper";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 export default function Home({ navigation }) {
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
   const appName = "My app!";
-  // update to receive data
+
+  // Fetch goals for the current user
   useEffect(() => {
-    const unsubscribe = onSnapshot(
+    const goalsQuery = query(
       collection(database, "goals"),
+      where("owner", "==", auth.currentUser.uid)
+    );
+
+    const unsubscribe = onSnapshot(
+      goalsQuery,
       (querySnapshot) => {
-        let newArray = [];
+        const newArray = [];
         querySnapshot.forEach((docSnapshot) => {
           newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
         });
         setGoals(newArray);
+      },
+      (error) => {
+        console.error("Error fetching goals:", error);
+        if (error.code === 'permission-denied') {
+          Alert.alert(
+            "Permission Error",
+            "You don't have permission to access these goals."
+          );
+        }
       }
     );
+
     return () => unsubscribe();
   }, []);
+
   function handleInputData(data) {
-    console.log("App.js ", data);
-    let newGoal = { text: data };
+    let newGoal = { text: data, owner: auth.currentUser.uid };
     writeToDB(newGoal, "goals");
-    //make a new obj and store the received data as the obj's text property
-    // setGoals((prevGoals) => {
-    //   return [...prevGoals, newGoal];
-    // });
-    // setReceivedData(data);
     setModalVisible(false);
   }
+
   function dismissModal() {
     setModalVisible(false);
   }
+
   function handleGoalDelete(deletedId) {
-    // setGoals((prevGoals) => {
-    //   return prevGoals.filter((goalObj) => {
-    //     return goalObj.id != deletedId;
-    //   });
-    // });
     deleteFromDB(deletedId, "goals");
   }
 
-  // function handleGoalPress(pressedGoal) {
-  //   //receive the goal obj
-  //   console.log(pressedGoal);
-  //   // navigate to GoalDetails and pass goal obj as params
-  //   navigation.navigate("Details", { goalData: pressedGoal });
-  // }
   function deleteAll() {
     Alert.alert("Delete All", "Are you sure you want to delete all goals?", [
       {
         text: "Yes",
         onPress: () => {
-          // setGoals([]);
           deleteAllFromDB("goals");
         },
       },
@@ -87,21 +88,13 @@ export default function Home({ navigation }) {
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.topView}>
-        <Header name={appName}></Header>
+        <Header name={appName} />
         <PressableButton
-          pressedHandler={function () {
-            setModalVisible(true);
-          }}
+          pressedHandler={() => setModalVisible(true)}
           componentStyle={{ backgroundColor: "purple" }}
         >
           <Text style={styles.buttonText}>Add a Goal</Text>
         </PressableButton>
-        {/* <Button
-          title="Add a Goal"
-          onPress={function () {
-            setModalVisible(true);
-          }}
-        /> */}
       </View>
       <Input
         textInputFocus={true}
@@ -111,46 +104,18 @@ export default function Home({ navigation }) {
       />
       <View style={styles.bottomView}>
         <FlatList
-          ItemSeparatorComponent={({ highlighted }) => {
-            return (
-              <View
-                style={{
-                  height: 5,
-                  backgroundColor: highlighted ? "purple" : "gray",
-                }}
-              />
-            );
-          }}
-          ListEmptyComponent={
-            <Text style={styles.header}>No goals to show</Text>
-          }
-          ListHeaderComponent={
-            goals.length && <Text style={styles.header}>My Goals List</Text>
-          }
-          ListFooterComponent={
-            goals.length && <Button title="Delete all" onPress={deleteAll} />
-          }
+          ItemSeparatorComponent={({ highlighted }) => (
+            <View style={{ height: 5, backgroundColor: highlighted ? "purple" : "gray" }} />
+          )}
+          ListEmptyComponent={<Text style={styles.header}>No goals to show</Text>}
+          ListHeaderComponent={goals.length ? <Text style={styles.header}>My Goals List</Text> : null}
+          ListFooterComponent={goals.length ? <Button title="Delete all" onPress={deleteAll} /> : null}
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
-          renderItem={({ item, separators }) => {
-            return (
-              <GoalItem
-                separators={separators}
-                deleteHandler={handleGoalDelete}
-                goalObj={item}
-              />
-            );
-          }}
+          renderItem={({ item, separators }) => (
+            <GoalItem separators={separators} deleteHandler={handleGoalDelete} goalObj={item} />
+          )}
         />
-        {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-          {goals.map((goalObj) => {
-            return (
-              <View key={goalObj.id} style={styles.textContainer}>
-                <Text style={styles.text}>{goalObj.text}</Text>
-              </View>
-            );
-          })}
-        </ScrollView> */}
       </View>
     </SafeAreaView>
   );
@@ -160,13 +125,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    // alignItems: "center",
     justifyContent: "center",
   },
   scrollViewContainer: {
     alignItems: "center",
   },
-
   topView: {
     flex: 1,
     alignItems: "center",
