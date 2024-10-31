@@ -8,6 +8,9 @@ import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import { auth } from "./Firebase/firebaseSetup";
 import { onAuthStateChanged } from "firebase/auth";
+import Profile from "./Components/Profile";
+import PressableButton from "./Components/PressableButton";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,8 +25,22 @@ const appStack = (
     <Stack.Screen
       name="Home"
       component={Home}
-      options={{
-        title: "My Goals",
+      options={({ navigation }) => {
+        return {
+          title: "My Goals",
+          headerRight: () => {
+            return (
+              <PressableButton
+                componentStyle={{ backgroundColor: "purple" }}
+                pressedHandler={() => {
+                  navigation.navigate("Profile");
+                }}
+              >
+                <AntDesign name="user" size={24} color="white" />
+              </PressableButton>
+            );
+          },
+        };
       }}
     />
     <Stack.Screen
@@ -45,6 +62,7 @@ const appStack = (
         };
       }}
     />
+    <Stack.Screen name="Profile" component={Profile} />
   </>
 );
 export default function App() {
