@@ -1,5 +1,7 @@
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { View, Text, TextInput, Button, StyleSheet, Alert } from "react-native";
+import { auth } from "../Firebase/firebaseSetup";
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState("");
@@ -8,7 +10,20 @@ export default function Login({ navigation }) {
     //take user to sign up
     navigation.replace("Signup");
   };
-  const loginHandler = async () => {};
+  const loginHandler = async () => {
+    // log user in with signInWithEmailAndPassword
+    // data validation
+    if (email.length === 0 || password.length === 0) {
+      Alert.alert("All fields should be provided");
+      return;
+    }
+    try {
+      const userCred = await signInWithEmailAndPassword(auth, email, password);
+      console.log(userCred.user);
+    } catch (err) {
+      console.log("login ", err);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -36,7 +51,6 @@ export default function Login({ navigation }) {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
