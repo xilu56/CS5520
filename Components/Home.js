@@ -30,9 +30,7 @@ export default function Home({ navigation }) {
 
   // Fetch goals for the current user
   useEffect(() => {
-    const goalsQuery = query(
-      collection(database, "goals"),
-      where("owner", "==", auth.currentUser.uid)
+    const goalsQuery = query(collection(database, "goals"), where("owner", "==", auth.currentUser.uid)
     );
 
     const unsubscribe = onSnapshot(
