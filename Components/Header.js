@@ -11,7 +11,6 @@ const windowHeight = Dimensions.get("window").height;
 
 export default function Header({ name }) {
   const { width, height } = useWindowDimensions();
-  console.log(width);
   return (
     <View>
       {/* use the prop here */}
@@ -25,8 +24,8 @@ export default function Header({ name }) {
 const styles = StyleSheet.create({
   text: {
     color: "darkmagenta",
-    fontSize: windowWidth < 400 ? 20 : 26,
-    borderColor: "purple",
+    fontSize: windowWidth < 380 ? 20 : 26,
+    borderColor: "darkmagenta",
     borderWidth: 2,
     padding: 5,
     marginBottom: 10,

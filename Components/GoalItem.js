@@ -1,4 +1,4 @@
-import { Button, Pressable, StyleSheet, Text, View, Alert } from "react-native";
+import { Alert, Button, Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import PressableButton from "./PressableButton";
@@ -6,26 +6,16 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 
 export default function GoalItem({ goalObj, deleteHandler, separators }) {
   const navigation = useNavigation();
+
   function handleDelete() {
+    console.log("deleted");
     deleteHandler(goalObj.id);
   }
-
-  function showDeleteConfirmation() {
-    Alert.alert(
-      "Delete Goal",
-      "Are you sure you want to delete this goal?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Delete",
-          onPress: handleDelete,
-          style: "destructive",
-        },
-      ]
-    );
+  function handleLongPress() {
+    Alert.alert("Delete A Goal", "Are you sure you want to delete this goal?", [
+      { text: "No" },
+      { text: "Yes", onPress: handleDelete },
+    ]);
   }
   function handlePress() {
     // call a callbackfn received from parent
@@ -36,31 +26,31 @@ export default function GoalItem({ goalObj, deleteHandler, separators }) {
   return (
     <View style={styles.textContainer}>
       <Pressable
+        onPressIn={() => separators.highlight()}
+        onPressOut={() => separators.unhighlight()}
+        onLongPress={handleLongPress}
         onPress={handlePress}
-        onLongPress={showDeleteConfirmation}
-        onPressIn={() => {
-          separators.highlight()
-        }}
-        onPressOut={() => {
-          separators.unhighlight()
-        }}
         style={({ pressed }) => {
           return [styles.horizontalContainer, pressed && styles.pressedStyle];
         }}
-        android_ripple={{ color: "red", radius: 30 }}
+        android_ripple={{ color: "red", radius: 25 }}
       >
         <Text style={styles.text}>{goalObj.text}</Text>
+        {/* <Button title="X" color="grey" onPress={handleDelete} /> */}
         <PressableButton
           componentStyle={styles.deleteButton}
-          pressedFunction={handleDelete}
+          pressedHandler={handleDelete}
           pressedStyle={styles.pressedStyle}
         >
+          {/* <Text style={styles.deleteText}>X</Text> */}
           <AntDesign name="delete" size={24} color="black" />
         </PressableButton>
+        {/* <Button title="i" color="grey" onPress={handlePress} /> */}
       </Pressable>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   text: {
     color: "purple",
@@ -68,7 +58,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   textContainer: {
-    backgroundColor: "#aaa",
     borderRadius: 5,
     marginVertical: 20,
     flexDirection: "row",
@@ -82,21 +71,12 @@ const styles = StyleSheet.create({
   pressedStyle: {
     opacity: 0.5,
     backgroundColor: "red",
-      deleteButton: {
-    backgroundColor: "grey",
-  },
-  deleteText: {
-    fontSize: 20,
-    color: "white",
   },
   deleteButton: {
     backgroundColor: "grey",
   },
-  deleteContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 10,
-    color: "grey",
-  },
+  deleteText: {
+    color: "white",
+    fontSize: 20,
   },
 });

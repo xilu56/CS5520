@@ -1,50 +1,66 @@
 import { StatusBar } from "expo-status-bar";
 import {
-  Alert,
   Button,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   View,
   FlatList,
-  Pressable,
+  Alert,
 } from "react-native";
 import Header from "./Header";
-import { useState,useEffect } from "react";
+import { useEffect, useState } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
-import { database } from "../Firebase/firebaseSetup";
-import { writeToDB, deleteFromDB, deleteAllFromDB } from "../Firebase/firestoreHelper";
-
-import { collection, onSnapshot } from "firebase/firestore";
+import { auth, database } from "../Firebase/firebaseSetup";
+import {
+  writeToDB,
+  deleteFromDB,
+  deleteAllFromDB,
+} from "../Firebase/firestoreHelper";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 export default function Home({ navigation }) {
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
   const appName = "My app!";
-  const collectionName = "goals";
 
+  // Fetch goals for the current user
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(database, collectionName), (querySnapshot) => {
-      let newArray = [];
-      querySnapshot.forEach((docSnapshot) => {
-        newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
-      });
-      setGoals(newArray);
-    });
-  
-    // Cleanup function to detach the listener
-    return () => {
-      unsubscribe();
-    };
+    const goalsQuery = query(
+      collection(database, "goals"),
+      where("owner", "==", auth.currentUser.uid)
+    );
+
+    const unsubscribe = onSnapshot(
+      goalsQuery,
+      (querySnapshot) => {
+        const newArray = [];
+        querySnapshot.forEach((docSnapshot) => {
+          newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
+        });
+        setGoals(newArray);
+      },
+      (error) => {
+        console.error("Error fetching goals:", error);
+        if (error.code === 'permission-denied') {
+          Alert.alert(
+            "Permission Error",
+            "You don't have permission to access these goals."
+          );
+        }
+      }
+    );
+
+    return () => unsubscribe();
   }, []);
-  
+
   function handleInputData(data) {
-    console.log("App.js ", data);
-    let newGoal = { text: data };
-    writeToDB(newGoal, collectionName);
+    let newGoal = { text: data, owner: auth.currentUser.uid };
+    writeToDB(newGoal, "goals");
     setModalVisible(false);
   }
 
@@ -53,7 +69,7 @@ export default function Home({ navigation }) {
   }
 
   function handleGoalDelete(deletedId) {
-    deleteFromDB(deletedId, collectionName);
+    deleteFromDB(deletedId, "goals");
   }
 
   function deleteAll() {
@@ -61,30 +77,21 @@ export default function Home({ navigation }) {
       {
         text: "Yes",
         onPress: () => {
-          deleteAllFromDB(collectionName);
+          deleteAllFromDB("goals");
         },
       },
       { text: "No", style: "cancel" },
     ]);
   }
 
-  const renderSeparator = ({ highlighted }) => (
-    <View
-      style={[
-        styles.separator,
-        { backgroundColor: highlighted ? "purple" : "grey" },
-      ]}
-    />
-  );
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.topView}>
-        <Header name={appName}></Header>
+        <Header name={appName} />
         <PressableButton
-          pressedFunction={() => setModalVisible(true)}
-          componentStyle={{ backgroundColor: "beige" }}
+          pressedHandler={() => setModalVisible(true)}
+          componentStyle={{ backgroundColor: "purple" }}
         >
           <Text style={styles.buttonText}>Add a Goal</Text>
         </PressableButton>
@@ -97,27 +104,17 @@ export default function Home({ navigation }) {
       />
       <View style={styles.bottomView}>
         <FlatList
-          ItemSeparatorComponent={renderSeparator}
-          ListEmptyComponent={
-            <Text style={styles.header}>No goals to show</Text>
-          }
-          ListHeaderComponent={
-            goals.length ? <Text style={styles.header}>My Goals List</Text> : null
-          }
-          ListFooterComponent={
-            goals.length ? <Button title="Delete all" onPress={deleteAll} /> : null
-          }
+          ItemSeparatorComponent={({ highlighted }) => (
+            <View style={{ height: 5, backgroundColor: highlighted ? "purple" : "gray" }} />
+          )}
+          ListEmptyComponent={<Text style={styles.header}>No goals to show</Text>}
+          ListHeaderComponent={goals.length ? <Text style={styles.header}>My Goals List</Text> : null}
+          ListFooterComponent={goals.length ? <Button title="Delete all" onPress={deleteAll} /> : null}
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
-          renderItem={({ item, separators }) => {
-            return (
-              <GoalItem
-                deleteHandler={handleGoalDelete}
-                goalObj={item}
-                separators={separators}
-              />
-            );
-          }}
+          renderItem={({ item, separators }) => (
+            <GoalItem separators={separators} deleteHandler={handleGoalDelete} goalObj={item} />
+          )}
         />
       </View>
     </SafeAreaView>
@@ -144,7 +141,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginTop: 10,
   },
-  separator: {
-    height: 5,
+  buttonText: {
+    color: "white",
+    fontSize: 20,
   },
 });
