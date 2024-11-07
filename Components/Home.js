@@ -21,6 +21,8 @@ import {
   deleteAllFromDB,
 } from "../Firebase/firestoreHelper";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
+const response = await fetch(uri);
+const blob = await response.blob();
 
 export default function Home({ navigation }) {
   const [receivedData, setReceivedData] = useState("");
