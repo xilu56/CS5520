@@ -9,9 +9,12 @@ import {
   } from "react-native";
   import React, { useState } from "react";
   import * as Location from "expo-location";
+  import { useNavigation } from "@react-navigation/native";
   const windowWidth = Dimensions.get("window").width;
   
   export default function LocationManager() {
+    const navigation = useNavigation();
+  
     const [location, setLocation] = useState(null);
     const [response, requestPermission] = Location.useForegroundPermissions();
     async function verifyPermission() {
@@ -36,7 +39,6 @@ import {
           return;
         }
         const response = await Location.getCurrentPositionAsync();
-        console.log(response);
         setLocation({
           latitude: response.coords.latitude,
           longitude: response.coords.longitude,
@@ -48,6 +50,13 @@ import {
     return (
       <View>
         <Button title="Locate Me" onPress={locateUserHandler} />
+        <Button
+          title="Let me choose on the map"
+          onPress={() => {
+            //navigate to Map screen
+            navigation.navigate("Map");
+          }}
+        />
         {location && (
           <Image
             source={{
@@ -59,7 +68,6 @@ import {
       </View>
     );
   }
-  
   const styles = StyleSheet.create({
     image: { width: windowWidth, height: 200 },
   });
