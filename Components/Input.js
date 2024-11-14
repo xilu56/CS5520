@@ -9,6 +9,7 @@ import {
   Image,
 } from "react-native";
 import React, { useState } from "react";
+import ImageManager from "./ImageManager";
 
 export default function Input({
   textInputFocus,
@@ -18,10 +19,11 @@ export default function Input({
 }) {
   const [text, setText] = useState("");
   const [blur, setBlur] = useState(false);
+  const [imageUri, setImageUri] = useState("");
   const minimumChar = 3;
   function handleConfirm() {
     // console.log(text);
-    inputHandler(text);
+    inputHandler(text, imageUri);
     setText("");
   }
   function handleCancel() {
@@ -36,6 +38,10 @@ export default function Input({
         },
       },
     ]);
+  }
+  function receiveImageUri(uri) {
+    console.log("In Input ", uri);
+    setImageUri(uri);
   }
   return (
     <Modal animationType="slide" visible={isModalVisible}>
@@ -80,6 +86,7 @@ export default function Input({
         ) : (
           text && <Text>{text.length}</Text>
         )}
+        <ImageManager receiveImageUri={receiveImageUri}/>
         <View style={styles.buttonsRow}>
           <View style={styles.buttonContainer}>
             <Button title="Cancel" onPress={handleCancel} />

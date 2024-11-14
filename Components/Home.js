@@ -21,6 +21,8 @@ import {
   deleteAllFromDB,
 } from "../Firebase/firestoreHelper";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
+const response = await fetch(uri);
+const blob = await response.blob();
 
 export default function Home({ navigation }) {
   const [receivedData, setReceivedData] = useState("");
@@ -30,9 +32,7 @@ export default function Home({ navigation }) {
 
   // Fetch goals for the current user
   useEffect(() => {
-    const goalsQuery = query(
-      collection(database, "goals"),
-      where("owner", "==", auth.currentUser.uid)
+    const goalsQuery = query(collection(database, "goals"), where("owner", "==", auth.currentUser.uid)
     );
 
     const unsubscribe = onSnapshot(
@@ -59,8 +59,9 @@ export default function Home({ navigation }) {
   }, []);
 
   function handleInputData(data) {
-    let newGoal = { text: data, owner: auth.currentUser.uid };
-    writeToDB(newGoal, "goals");
+    let newGoal = { text: data.text };
+    newGoal = { ...newGoal, owner: auth.currentUser.uid };
+    // writeToDB(newGoal, "goals");
     setModalVisible(false);
   }
 
