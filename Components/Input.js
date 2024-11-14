@@ -23,7 +23,7 @@ export default function Input({
   const minimumChar = 3;
   function handleConfirm() {
     // console.log(text);
-    inputHandler(text, imageUri);
+    inputHandler({text, imageUri});
     setText("");
   }
   function handleCancel() {
