@@ -12,4 +12,5 @@ export default function Profile() {
     </View>
   );
 }
+
 const styles = StyleSheet.create({});

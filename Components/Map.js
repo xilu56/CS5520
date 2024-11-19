@@ -21,7 +21,7 @@ export default function Map() {
         longitudeDelta: 0.0421,
       }}
     >
-      {selectedLocation && <Marker coordinate={selectedLocation} />}
+      <Marker coordinate={selectedLocation} />
     </MapView>
   );
 }

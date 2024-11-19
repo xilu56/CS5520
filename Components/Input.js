@@ -23,7 +23,7 @@ export default function Input({
   const minimumChar = 3;
   function handleConfirm() {
     // console.log(text);
-    inputHandler({text, imageUri});
+    inputHandler({ text, imageUri });
     setText("");
   }
   function handleCancel() {
@@ -44,59 +44,61 @@ export default function Input({
     setImageUri(uri);
   }
   return (
-    <Modal animationType="slide" visible={isModalVisible}>
+    <Modal animationType="slide" visible={isModalVisible} transparent={true}>
       <View style={styles.container}>
-        <Image
-          source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/2617/2617812.png",
-          }}
-          style={styles.image}
-          alt="Image of a an arrow"
-        />
-        <Image
-          source={require("../assets/2617812.png")}
-          style={styles.image}
-          alt="Image of a an arrow"
-        />
+        <View style={styles.modalContainer}>
+          <Image
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/512/2617/2617812.png",
+            }}
+            style={styles.image}
+            alt="Image of a an arrow"
+          />
+          <Image
+            source={require("../assets/goal.png")}
+            style={styles.image}
+            alt="Image of a an arrow"
+          />
 
-        <TextInput
-          autoFocus={textInputFocus}
-          placeholder="Type something"
-          autoCorrect={true}
-          keyboardType="default"
-          value={text}
-          style={styles.input}
-          onChangeText={(changedText) => {
-            setText(changedText);
-          }}
-          onBlur={() => {
-            setBlur(true);
-          }}
-          onFocus={() => {
-            setBlur(false);
-          }}
-        />
+          <TextInput
+            autoFocus={textInputFocus}
+            placeholder="Type something"
+            autoCorrect={true}
+            keyboardType="default"
+            value={text}
+            style={styles.input}
+            onChangeText={(changedText) => {
+              setText(changedText);
+            }}
+            onBlur={() => {
+              setBlur(true);
+            }}
+            onFocus={() => {
+              setBlur(false);
+            }}
+          />
 
-        {blur ? (
-          text.length >= minimumChar ? (
-            <Text>Thank you</Text>
+          {blur ? (
+            text.length >= minimumChar ? (
+              <Text>Thank you</Text>
+            ) : (
+              <Text>Please type more than {minimumChar} characters</Text>
+            )
           ) : (
-            <Text>Please type more than {minimumChar} characters</Text>
-          )
-        ) : (
-          text && <Text>{text.length}</Text>
-        )}
-        <ImageManager receiveImageUri={receiveImageUri}/>
-        <View style={styles.buttonsRow}>
-          <View style={styles.buttonContainer}>
-            <Button title="Cancel" onPress={handleCancel} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              disabled={text.length < minimumChar}
-              title="Confirm"
-              onPress={handleConfirm}
-            />
+            text && <Text>{text.length}</Text>
+          )}
+          <ImageManager receiveImageUri={receiveImageUri} />
+          <View style={styles.buttonsRow}>
+            <View style={styles.buttonContainer}>
+              <Button title="Cancel" onPress={handleCancel} />
+            </View>
+            <View style={styles.buttonContainer}>
+              <Button
+                disabled={text.length < minimumChar}
+                title="Confirm"
+                onPress={handleConfirm}
+              />
+            </View>
           </View>
         </View>
       </View>
@@ -107,7 +109,7 @@ export default function Input({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    // backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -116,6 +118,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     padding: 5,
     marginVertical: 10,
+  },
+  modalContainer: {
+    borderRadius: 6,
+    backgroundColor: "#999",
+    alignItems: "center",
   },
   buttonContainer: {
     width: "30%",
