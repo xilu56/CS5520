@@ -22,13 +22,21 @@ import {
 } from "../Firebase/firestoreHelper";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { ref, uploadBytesResumable } from "firebase/storage";
-
+import * as Notifications from "expo-notifications";
 export default function Home({ navigation }) {
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
   const appName = "My app!";
   // update to receive data
+  useEffect(() => {
+    console.log("Home use effect");
+    async function getPushToken() {
+      const pushToken = await Notifications.getExpoPushTokenAsync({});
+      console.log(pushToken);
+    }
+    getPushToken();
+  }, []);
   useEffect(() => {
     const unsubscribe = onSnapshot(
       // we should update the listener to only listen to our own data
@@ -50,7 +58,6 @@ export default function Home({ navigation }) {
     );
     return () => unsubscribe();
   }, []);
-
   async function fetchAndUploadImage(uri) {
     try {
       const response = await fetch(uri);
@@ -102,7 +109,6 @@ export default function Home({ navigation }) {
     // });
     deleteFromDB(deletedId, "goals");
   }
-
   // function handleGoalPress(pressedGoal) {
   //   //receive the goal obj
   //   console.log(pressedGoal);
@@ -121,7 +127,6 @@ export default function Home({ navigation }) {
       { text: "No", style: "cancel" },
     ]);
   }
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -194,7 +199,6 @@ export default function Home({ navigation }) {
     </SafeAreaView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -205,7 +209,6 @@ const styles = StyleSheet.create({
   scrollViewContainer: {
     alignItems: "center",
   },
-
   topView: {
     flex: 1,
     alignItems: "center",
