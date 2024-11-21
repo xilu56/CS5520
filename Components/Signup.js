@@ -7,6 +7,7 @@ export default function Signup({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
   const loginHandler = () => {
     //take user to login
     navigation.replace("Login");
@@ -78,6 +79,7 @@ export default function Signup({ navigation }) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

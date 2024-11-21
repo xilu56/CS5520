@@ -30,6 +30,7 @@ export default function ImageManager({ receiveImageUri }) {
         Alert.alert("You need to give permission for camera");
         return;
       }
+
       const result = await ImagePicker.launchCameraAsync({
         allowsEditing: true,
       });
@@ -59,4 +60,5 @@ export default function ImageManager({ receiveImageUri }) {
     </View>
   );
 }
-const styles = StyleSheet.create({ image: { width: 200, height: 200 } });
+
+const styles = StyleSheet.create({ image: { width: 100, height: 100 } });
