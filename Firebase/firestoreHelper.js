@@ -3,11 +3,11 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   setDoc,
 } from "firebase/firestore";
 import { database } from "./firebaseSetup";
-
 export async function writeToDB(data, collectionName) {
   try {
     const docRef = await addDoc(collection(database, collectionName), data);
@@ -16,7 +16,6 @@ export async function writeToDB(data, collectionName) {
     console.log("write to db ", err);
   }
 }
-
 export async function deleteFromDB(deletedId, collectionName) {
   try {
     await deleteDoc(doc(database, collectionName, deletedId));
@@ -26,7 +25,6 @@ export async function deleteFromDB(deletedId, collectionName) {
     console.log("delete from DB ", err);
   }
 }
-
 export async function updateDB(id, data, collectionName) {
   try {
     await setDoc(doc(database, collectionName, id), data, { merge: true });
@@ -34,7 +32,6 @@ export async function updateDB(id, data, collectionName) {
     console.log("update DB ", err);
   }
 }
-
 export async function deleteAllFromDB(collectionName) {
   try {
     //get all the documents in the collection
@@ -46,7 +43,6 @@ export async function deleteAllFromDB(collectionName) {
     console.log("delete all ", err);
   }
 }
-
 export async function getAllDocuments(collectionName) {
   try {
     const querySnapshot = await getDocs(collection(database, collectionName));
@@ -59,5 +55,18 @@ export async function getAllDocuments(collectionName) {
     return data;
   } catch (err) {
     console.log("get all docs ", err);
+  }
+}
+
+export async function getOneDocument(id, collectionName) {
+  try {
+    const docSnapshot = await getDoc(doc(database, collectionName, id));
+
+    if (docSnapshot.exists()) {
+      return docSnapshot.data();
+    }
+    return null;
+  } catch (err) {
+    console.log("get one doc ", err);
   }
 }
