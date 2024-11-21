@@ -6,7 +6,6 @@ import { updateDB } from "../Firebase/firestoreHelper";
 import GoalUsers from "./GoalUsers";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../Firebase/firebaseSetup";
-
 export default function GoalDetails({ navigation, route }) {
   const [warning, setWarning] = useState(false);
   const [imageUri, setImageUri] = useState("");
@@ -34,7 +33,7 @@ export default function GoalDetails({ navigation, route }) {
   useEffect(() => {
     async function getImageUri() {
       try {
-        if (route.params.goalData.imageUri) {
+        if (route.params && route.params.goalData.imageUri) {
           const imageRef = ref(storage, route.params.goalData.imageUri);
           const httpsImageURi = await getDownloadURL(imageRef);
           setImageUri(httpsImageURi);
@@ -48,7 +47,6 @@ export default function GoalDetails({ navigation, route }) {
   function moreDetailsHandler() {
     navigation.push("Details");
   }
-
   return (
     <View>
       {route.params ? (
@@ -60,7 +58,7 @@ export default function GoalDetails({ navigation, route }) {
         <Text style={warning && styles.warningStyle}>More details</Text>
       )}
       <Button title="More Details" onPress={moreDetailsHandler} />
-      <GoalUsers id={route.params.goalData.id} />
+      {route.params && <GoalUsers id={route.params.goalData.id} />}
       {imageUri && (
         <Image
           source={{
@@ -73,7 +71,6 @@ export default function GoalDetails({ navigation, route }) {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   warningStyle: {
     color: "red",
