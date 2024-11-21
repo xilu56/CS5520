@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { updateDB } from "../Firebase/firestoreHelper";
+import { getOneDocument, updateDB } from "../Firebase/firestoreHelper";
 import { auth } from "../Firebase/firebaseSetup";
 const windowWidth = Dimensions.get("window").width;
 
@@ -19,6 +19,16 @@ export default function LocationManager() {
   const route = useRoute();
   const [location, setLocation] = useState(null);
   const [response, requestPermission] = Location.useForegroundPermissions();
+  useEffect(() => {
+    async function getUserData() {
+      const userData = await getOneDocument(auth.currentUser.uid, "users");
+      if (userData && userData.location) {
+        // read the location info from userData
+        setLocation(userData.location);
+      }
+    }
+    getUserData();
+  }, []);
   useEffect(() => {
     if (route.params) {
       setLocation(route.params.selectedLocation);
