@@ -6,6 +6,7 @@ import { updateDB } from "../Firebase/firestoreHelper";
 import GoalUsers from "./GoalUsers";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../Firebase/firebaseSetup";
+
 export default function GoalDetails({ navigation, route }) {
   const [warning, setWarning] = useState(false);
   const [imageUri, setImageUri] = useState("");
@@ -47,6 +48,7 @@ export default function GoalDetails({ navigation, route }) {
   function moreDetailsHandler() {
     navigation.push("Details");
   }
+
   return (
     <View>
       {route.params ? (
@@ -71,6 +73,7 @@ export default function GoalDetails({ navigation, route }) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   warningStyle: {
     color: "red",

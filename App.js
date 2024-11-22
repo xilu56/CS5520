@@ -19,7 +19,6 @@ Notifications.setNotificationHandler({
     return { shouldShowAlert: true };
   },
 });
-
 const Stack = createNativeStackNavigator();
 
 const authStack = (
@@ -91,6 +90,7 @@ const appStack = (
     <Stack.Screen name="Map" component={Map} />
   </>
 );
+
 export default function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   useEffect(() => {
